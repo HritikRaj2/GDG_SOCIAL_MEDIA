@@ -31,8 +31,8 @@ To develop a clean, responsive, and feature-rich blogging platform for internal 
 - **MySQL**
 
 ### 🌐 Deployment
-- **Frontend:** Vercel
-- **Backend:** Railway / Render / Cyclic
+- **Frontend:** 
+- **Backend:**
 
 ---
 
