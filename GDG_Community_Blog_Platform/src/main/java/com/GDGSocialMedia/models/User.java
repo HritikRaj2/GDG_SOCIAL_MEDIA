@@ -3,6 +3,8 @@ package com.GDGSocialMedia.models;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String firstName;
     private String lastName;
@@ -23,8 +26,9 @@ public class User {
     private List<Integer> followers=new ArrayList<>();
     private List<Integer> following=new ArrayList<>();
     private String gender;
+    private List<Post> savedPost=new ArrayList<>();
 
-    public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender) {
+    public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender, List<Post> savedPost) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,6 +37,7 @@ public class User {
         this.followers = followers;
         this.following = following;
         this.gender = gender;
+        this.savedPost = savedPost;
     }
 
     public User() {
@@ -57,6 +62,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Post> getSavedPost() {
+        return savedPost;
+    }
+
+    public void setSavedPost(List<Post> savedPost) {
+        this.savedPost = savedPost;
     }
 
     public String getPassword() {
