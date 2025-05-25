@@ -22,7 +22,6 @@ To develop a clean, responsive, and feature-rich blogging platform for internal 
 - **Tailwind CSS**
 - **Redux / Context API**
 - **React Router**
-- *(Optional: Next.js for extra features)*
 
 ### 🔙 Backend
 - **Spring Boot**
