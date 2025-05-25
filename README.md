@@ -1,7 +1,6 @@
-# 🌐 GDG Community Blog Platform
+# 🌐 GDG Community Social Media Platform
 
-A **full-stack social blogging platform** developed for the GDG Team, designed to offer a LinkedIn-style user experience. Built using **React.js**, **Tailwind CSS**, **Redux**, **Spring Boot**, and **MySQL**, this platform allows users to connect with friends, share content, and engage with the community through likes, comments, and tagging.
-
+A **full-stack social blogging platform** developed for the GDG Team, designed to offer a LinkedIn-style user experience. 
 ---
 
 ## 🧠 Objective
