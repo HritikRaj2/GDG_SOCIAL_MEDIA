@@ -8,6 +8,8 @@ public interface UserService {
 
     public User registerUser(User user);
 
+    List<User> getAll();
+
     public User findUserById(Integer userId) throws Exception;
 
     public User findUserByEmail(String email);
@@ -15,6 +17,8 @@ public interface UserService {
     public User followUser(Integer userid1, Integer userid2) throws Exception;
 
     public User updateUser(User user,Integer userId) throws Exception;
+
+
 
     public List<User> searchUser(String query);
 }

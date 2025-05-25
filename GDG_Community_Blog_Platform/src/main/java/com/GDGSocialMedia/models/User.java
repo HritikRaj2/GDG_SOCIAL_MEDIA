@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,8 +20,8 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private List<Integer> followers;
-    private List<Integer> following;
+    private List<Integer> followers=new ArrayList<>();
+    private List<Integer> following=new ArrayList<>();
     private String gender;
 
     public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender) {
@@ -32,6 +33,10 @@ public class User {
         this.followers = followers;
         this.following = following;
         this.gender = gender;
+    }
+
+    public User() {
+
     }
 
     public Integer getId() {

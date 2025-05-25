@@ -28,6 +28,10 @@ public class UserServiceImpl implements UserService{
         return savedUser;
     }
 
+    public List<User> getAll(){
+        return userRepository.findAll();
+    }
+
     @Override
     public User findUserById(Integer userId) throws Exception {
         Optional<User> user=userRepository.findById(userId);
@@ -82,6 +86,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> searchUser(String query) {
-        return List.of();
+        return userRepository.searchUser(query);
     }
 }
