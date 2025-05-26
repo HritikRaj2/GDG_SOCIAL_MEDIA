@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/allusers")
+    @GetMapping("/api/allusers")
     public ResponseEntity<?> getAllUsers(){
         List<User> all=userService.getAll();
         if(all !=null && !all.isEmpty()){
@@ -34,27 +34,27 @@ public class UserController {
         return savedUser;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/api/user/{userId}")
     public User getUserById(@PathVariable("userId") Integer id) throws Exception{
         User user=userService.findUserById(id);
         return user;
 
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/api/users/{userId}")
     public User updateUser(@RequestBody User user , @PathVariable Integer userId) throws Exception{
         User updatedUser=userService.updateUser(user, userId);
         return updatedUser;
     }
 
-    @PutMapping("/user/follow/{userId1}/{userId2}")
+    @PutMapping("/api/user/follow/{userId1}/{userId2}")
     public User followUserHandler(@PathVariable Integer userId1 , @PathVariable Integer userId2) throws Exception{
         User user= userService.followUser(userId1,userId2);
         return user;
     }
 
 
-    @GetMapping("/users/search")
+    @GetMapping("/api/users/search")
     public List<User> searchUser(@RequestParam("query") String query){
         List<User> users=userService.searchUser(query);
         return users;
