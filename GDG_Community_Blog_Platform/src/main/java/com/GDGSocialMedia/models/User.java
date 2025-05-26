@@ -2,10 +2,7 @@ package com.GDGSocialMedia.models;
 
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +23,8 @@ public class User {
     private List<Integer> followers=new ArrayList<>();
     private List<Integer> following=new ArrayList<>();
     private String gender;
+
+    @ManyToMany
     private List<Post> savedPost=new ArrayList<>();
 
     public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender, List<Post> savedPost) {
