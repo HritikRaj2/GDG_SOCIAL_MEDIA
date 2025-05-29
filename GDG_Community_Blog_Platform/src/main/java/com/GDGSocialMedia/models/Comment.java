@@ -4,36 +4,30 @@ package com.GDGSocialMedia.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Post {
+public class Comment {
 
-    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer Id;
+    private Integer id;
 
-    private String caption;
-    private String image;
-    private String video;
+    private String content;
 
     @ManyToOne
     private User user;
 
-    private LocalDateTime createdAt;
-
-    @OneToMany
+    @ManyToMany
     private List<User> liked=new ArrayList<>();
 
+    private LocalDateTime createdAt;
 
-    @OneToMany
-    private List<Comment> comments =new ArrayList<>();
+    public Comment(){
 
+    }
 }
