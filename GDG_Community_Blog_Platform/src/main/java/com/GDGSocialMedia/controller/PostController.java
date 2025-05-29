@@ -29,7 +29,7 @@ public class PostController {
         return new ResponseEntity<>(createdPost, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/post/{postId}")
+    @DeleteMapping("/api/post/{postId}")
     public ResponseEntity<ApiResponse> deletePost(@RequestHeader("Authorization") String jwt ,@PathVariable Integer postId)throws Exception{
         User reqUser=userService.findUserByJwt(jwt);
 
@@ -38,25 +38,25 @@ public class PostController {
         return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/api/posts/{postId}")
     public ResponseEntity<Post> findPostByIdHandler(@PathVariable Integer postId)throws Exception{
         Post post=postService.findPostById(postId);
         return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/posts/user/{userId}")
+    @GetMapping("/api/posts/user/{userId}")
     public ResponseEntity<List<Post>> findUserPost(@PathVariable Integer userId){
         List<Post> post=postService.findPostByUserId(userId);
         return new ResponseEntity<List<Post>>(post,HttpStatus.OK);
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     public ResponseEntity<List<Post>> findAllPost(){
         List<Post> post=postService.findAllPost();
         return new ResponseEntity<List<Post>>(post,HttpStatus.OK);
     }
 
-    @PutMapping("/post/{postId}")
+    @PutMapping("/api/post/{postId}")
     public ResponseEntity<Post> savedPostHandler(@RequestHeader("Authorization")String jwt,@PathVariable Integer postId) throws Exception{
         User reqUser=userService.findUserByJwt(jwt);
 
@@ -64,7 +64,7 @@ public class PostController {
         return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/post/like/{postId}")
+    @PutMapping("/api/post/like/{postId}")
     public ResponseEntity<Post> likePostHandler(@RequestHeader("Authorization")String jwt,@PathVariable Integer postId) throws Exception{
         User reqUser=userService.findUserByJwt(jwt);
 
