@@ -1,37 +1,35 @@
 package com.GDGSocialMedia.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Chat {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer Id;
 
-    private String chat_name;
-
-    private String chat_image;
-
-
-    @OneToMany(mappedBy = "chat")
-    private List<Message> messages=new ArrayList<>();
+    private String content;
+    private String image;
 
 
-
-    @ManyToMany
-    private List<User> users=new ArrayList<>();
+    @ManyToOne
+    private User user;
 
     private LocalDateTime timestamp;
 
 
+    @JsonIgnore
+    @ManyToOne
+    private Chat chat;
 }
