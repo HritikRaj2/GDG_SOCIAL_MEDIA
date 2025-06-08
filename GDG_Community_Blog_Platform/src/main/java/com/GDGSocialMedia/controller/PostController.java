@@ -1,6 +1,6 @@
 package com.GDGSocialMedia.controller;
 
-
+import com.GDGSocialMedia.dto.PostResponse;
 import com.GDGSocialMedia.models.Post;
 import com.GDGSocialMedia.models.User;
 import com.GDGSocialMedia.response.ApiResponse;
@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 public class PostController {
@@ -51,9 +54,16 @@ public class PostController {
     }
 
     @GetMapping("/api/posts")
-    public ResponseEntity<List<Post>> findAllPost(){
-        List<Post> post=postService.findAllPost();
-        return new ResponseEntity<List<Post>>(post,HttpStatus.OK);
+    public ResponseEntity<List<PostResponse>> findAllPost(@RequestHeader("Authorization") String jwt) throws Exception {
+        User reqUser = userService.findUserByJwt(jwt);
+        List<Post> posts = postService.findAllPost();
+        // Sort by creation date and limit to 10
+        posts.sort((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
+        List<PostResponse> recentPosts = posts.stream()
+            .limit(10)
+            .map(PostResponse::fromPost)
+            .collect(Collectors.toList());
+        return new ResponseEntity<>(recentPosts, HttpStatus.OK);
     }
 
     @PutMapping("/api/post/{postId}")

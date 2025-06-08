@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -75,6 +76,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findAllPost() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public List<Post> findRecentPosts(int limit) {
+        return postRepository.findAll().stream()
+            .sorted((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()))
+            .limit(limit)
+            .collect(Collectors.toList());
     }
 
     @Override

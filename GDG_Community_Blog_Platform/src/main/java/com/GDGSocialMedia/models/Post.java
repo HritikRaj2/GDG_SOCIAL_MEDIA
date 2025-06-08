@@ -1,6 +1,7 @@
 package com.GDGSocialMedia.models;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,15 +26,16 @@ public class Post {
     private String video;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     private LocalDateTime createdAt;
 
     @OneToMany
-    private List<User> liked=new ArrayList<>();
-
+    @JsonIgnore
+    private List<User> liked = new ArrayList<>();
 
     @OneToMany
-    private List<Comment> comments =new ArrayList<>();
-
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 }

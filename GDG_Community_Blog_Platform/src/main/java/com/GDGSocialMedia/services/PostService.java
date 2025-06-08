@@ -15,6 +15,8 @@ public interface PostService {
 
     List<Post> findAllPost();
 
+    List<Post> findRecentPosts(int limit);
+
     Post savedPost(Integer postId,Integer userId) throws Exception;
 
     Post likePost(Integer postId , Integer userId) throws Exception;

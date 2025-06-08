@@ -1,7 +1,8 @@
 package com.GDGSocialMedia.models;
 
-
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -19,13 +23,17 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    
+    @JsonIgnore
     private String password;
-    private List<Integer> followers=new ArrayList<>();
-    private List<Integer> following=new ArrayList<>();
+    
+    private List<Integer> followers = new ArrayList<>();
+    private List<Integer> following = new ArrayList<>();
     private String gender;
 
     @ManyToMany
-    private List<Post> savedPost=new ArrayList<>();
+    @JsonIgnore
+    private List<Post> savedPost = new ArrayList<>();
 
     public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender, List<Post> savedPost) {
         this.id = id;
@@ -37,10 +45,6 @@ public class User {
         this.following = following;
         this.gender = gender;
         this.savedPost = savedPost;
-    }
-
-    public User() {
-
     }
 
     public Integer getId() {
@@ -113,5 +117,9 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getProfilePicture() {
+        return "";
     }
 }
