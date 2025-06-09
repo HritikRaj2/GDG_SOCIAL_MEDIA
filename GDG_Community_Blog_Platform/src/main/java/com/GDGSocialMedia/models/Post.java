@@ -38,6 +38,4 @@ public class Post {
     @OneToMany
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
-
-
 }

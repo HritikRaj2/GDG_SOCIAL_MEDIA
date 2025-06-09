@@ -1,24 +1,12 @@
-# Use Java 17 as the base image
-FROM eclipse-temurin:17-jdk-alpine
-
-# Set working directory
+# Build stage
+FROM maven:3-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy Maven wrapper and pom.xml
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-# Download dependencies
-RUN ./mvnw dependency:go-offline
-
-# Copy source code
-COPY src ./src
-
-# Build the application
-RUN ./mvnw package -DskipTests
-
-# Expose the port
+# Run stage
+FROM eclipse-temurin:17-alpine
+WORKDIR /app
+COPY --from=build /app/target/GDG_Community_Blog_Platform-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 5050
-
-# Run the application
-CMD ["java", "-jar", "target/GDG_Community_Blog_Platform-0.0.1-SNAPSHOT.jar"] 
+ENTRYPOINT ["java", "-jar", "app.jar"] 
