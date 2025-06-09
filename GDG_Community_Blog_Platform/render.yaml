@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: gdg-blog-backend
+    env: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/GDG_Community_Blog_Platform-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_VERSION
+        value: 17 
