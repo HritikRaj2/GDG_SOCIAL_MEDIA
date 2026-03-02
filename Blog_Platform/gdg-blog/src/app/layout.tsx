@@ -1,7 +1,7 @@
-import type { Metadata } from 'next';
-import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'GDG Social Media',
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans bg-gray-950 min-h-screen">
+      <body className="font-sans bg-gray-950 min-h-screen" suppressHydrationWarning={true}>
         <AuthProvider>
           <Toaster
             position="top-right"
