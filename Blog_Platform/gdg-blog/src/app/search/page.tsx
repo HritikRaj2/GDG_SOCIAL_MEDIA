@@ -9,6 +9,8 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import toast from 'react-hot-toast';
 import { Search, Users } from 'lucide-react';
 
+const SEARCH_DEBOUNCE_MS = 400;
+
 function SearchContent() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<User[]>([]);
@@ -51,7 +53,7 @@ function SearchContent() {
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       searchUsers(query);
-    }, 400);
+    }, SEARCH_DEBOUNCE_MS);
     return () => clearTimeout(debounceTimer);
   }, [query, searchUsers]);
 
