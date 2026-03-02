@@ -1,10 +1,10 @@
 package com.GDGSocialMedia.controller;
 
-
 import com.GDGSocialMedia.config.JwtProvider;
 import com.GDGSocialMedia.models.User;
 import com.GDGSocialMedia.repository.UserRepository;
 import com.GDGSocialMedia.request.LoginRequest;
+import com.GDGSocialMedia.request.RegisterRequest;
 import com.GDGSocialMedia.response.AuthResponse;
 import com.GDGSocialMedia.services.CustomUserDetailService;
 import com.GDGSocialMedia.services.UserService;
@@ -22,59 +22,63 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-     @Autowired
-     private UserService userService;
 
-     @Autowired
-     private CustomUserDetailService customUserDetailService;
+    @Autowired
+    private UserService userService;
 
-     @Autowired
-     private UserRepository userRepository;
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
-     @Autowired
-     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-     @PostMapping("/signup")
-     public AuthResponse createUser(@RequestBody User user) throws Exception {
-         User isExist =userRepository.findByEmail(user.getEmail());
-         if(isExist!=null){
-             throw new Exception("this email already exist");
-         }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-         User newUser= new User();
+    @PostMapping("/signup")
+    public AuthResponse createUser(@RequestBody RegisterRequest request) throws Exception {
+        // Check if email already exists
+        User isExist = userRepository.findByEmail(request.getEmail());
+        if (isExist != null) {
+            throw new Exception("This email already exists");
+        }
 
-         newUser.setEmail(user.getEmail());
-         newUser.setFirstName(user.getFirstName());
-         newUser.setLastName(user.getLastName());
-         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-         User savedUser=userRepository.save(newUser);
+        // Create new user from DTO
+        User newUser = new User();
+        newUser.setEmail(request.getEmail());
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
-         Authentication authentication=new UsernamePasswordAuthenticationToken(savedUser.getEmail(),savedUser.getPassword());
-         String token = JwtProvider.generateToken(authentication);
-         AuthResponse res=new AuthResponse(token, "Resgister Success");
+        User savedUser = userRepository.save(newUser);
 
-         return res;
-     }
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                savedUser.getEmail(), savedUser.getPassword()
+        );
+        String token = JwtProvider.generateToken(authentication);
 
+        return new AuthResponse(token, "Register Success");
+    }
 
-     @PostMapping("/signin")
-     public AuthResponse signin(@RequestBody LoginRequest loginRequest){
-         Authentication authentication=authenticate(loginRequest.getEmail(),loginRequest.getPassword());
-         String token = JwtProvider.generateToken(authentication);
-         AuthResponse res=new AuthResponse(token, "Signin Successfull");
+    @PostMapping("/signin")
+    public AuthResponse signin(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticate(
+                loginRequest.getEmail(), loginRequest.getPassword()
+        );
+        String token = JwtProvider.generateToken(authentication);
+        return new AuthResponse(token, "Signin Successful");
+    }
 
-         return res;
-     }
-
-
-    private Authentication authenticate(String email, String password){
-         UserDetails userDetails=customUserDetailService.loadUserByUsername(email);
-         if(userDetails==null){
-             throw new BadCredentialsException("invalid Username");
-         }
-         if(!passwordEncoder.matches(password,userDetails.getPassword())){
-             throw new BadCredentialsException("Invalid username or Password");
-         }
-         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-     }
+    private Authentication authenticate(String email, String password) {
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+        if (userDetails == null) {
+            throw new BadCredentialsException("Invalid username");
+        }
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+        return new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities()
+        );
+    }
 }

@@ -29,7 +29,7 @@ public class CreateMessageController {
         return message;
     }
 
-    @GetMapping("/api/messsages/get/chat/{chatId}")
+    @GetMapping("/api/messages/get/chat/{chatId}")
     public List<Message> findChatMessages(@PathVariable Integer chatId,@RequestHeader("Authorization") String jwt) throws Exception {
 
         User user=userService.findUserByJwt(jwt);

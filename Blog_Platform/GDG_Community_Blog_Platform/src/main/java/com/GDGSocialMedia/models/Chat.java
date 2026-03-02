@@ -15,7 +15,7 @@ import java.util.List;
 public class Chat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
     private String chat_name;

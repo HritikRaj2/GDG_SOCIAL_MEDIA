@@ -1,7 +1,5 @@
 package com.GDGSocialMedia.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,6 +9,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -18,108 +17,97 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
-    
+
     @JsonIgnore
     private String password;
-    
-    private List<Integer> followers = new ArrayList<>();
-    private List<Integer> following = new ArrayList<>();
+
+    @Column(name = "followers_list", columnDefinition = "TEXT")
+    private String followersJson = "[]";
+
+    @Column(name = "following_list", columnDefinition = "TEXT")
+    private String followingJson = "[]";
+
     private String gender;
 
     @ManyToMany
     @JsonIgnore
     private List<Post> savedPost = new ArrayList<>();
 
-    public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender, List<Post> savedPost) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.followers = followers;
-        this.following = following;
-        this.gender = gender;
-        this.savedPost = savedPost;
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public Integer getId() {
-        return id;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public List<Post> getSavedPost() {
-        return savedPost;
-    }
+    public List<Post> getSavedPost() { return savedPost; }
+    public void setSavedPost(List<Post> savedPost) { this.savedPost = savedPost; }
 
-    public void setSavedPost(List<Post> savedPost) {
-        this.savedPost = savedPost;
-    }
+    public String getProfilePicture() { return ""; }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    // Followers helpers
     public List<Integer> getFollowers() {
-        return followers;
+        return parseJson(followersJson);
     }
 
     public void setFollowers(List<Integer> followers) {
-        this.followers = followers;
+        this.followersJson = toJson(followers);
     }
 
+    public String getFollowersJson() { return followersJson; }
+    public void setFollowersJson(String followersJson) { this.followersJson = followersJson; }
+
+    // Following helpers
     public List<Integer> getFollowing() {
-        return following;
+        return parseJson(followingJson);
     }
 
     public void setFollowing(List<Integer> following) {
-        this.following = following;
+        this.followingJson = toJson(following);
     }
 
-    public String getGender() {
-        return gender;
+    public String getFollowingJson() { return followingJson; }
+    public void setFollowingJson(String followingJson) { this.followingJson = followingJson; }
+
+    private List<Integer> parseJson(String json) {
+        if (json == null || json.equals("[]") || json.isEmpty()) return new ArrayList<>();
+        try {
+            json = json.replace("[", "").replace("]", "").trim();
+            if (json.isEmpty()) return new ArrayList<>();
+            List<Integer> list = new ArrayList<>();
+            for (String s : json.split(",")) {
+                list.add(Integer.parseInt(s.trim()));
+            }
+            return list;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getProfilePicture() {
-        return "";
+    private String toJson(List<Integer> list) {
+        if (list == null || list.isEmpty()) return "[]";
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i));
+            if (i < list.size() - 1) sb.append(",");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
