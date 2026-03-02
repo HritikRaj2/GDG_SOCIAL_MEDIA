@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
+
 
 @Entity
 @NoArgsConstructor
@@ -26,8 +31,15 @@ public class User {
     
     @JsonIgnore
     private String password;
-    
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_followers", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "follower_id")
     private List<Integer> followers = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "following_id")
     private List<Integer> following = new ArrayList<>();
     private String gender;
 
