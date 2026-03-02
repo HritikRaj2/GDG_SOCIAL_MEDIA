@@ -42,14 +42,14 @@ export interface Comment {
 }
 
 export interface Chat {
-  Id: number;
+  id: number;
   chat_name: string;
   users: User[];
   messages: Message[];
 }
 
 export interface Message {
-  Id: number;
+  id: number;
   content: string;
   image?: string;
   user: User;
