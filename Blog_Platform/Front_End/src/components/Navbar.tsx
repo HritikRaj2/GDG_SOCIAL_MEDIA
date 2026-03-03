@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { Home, Search, User, LogOut, Menu, X, Sparkles } from 'lucide-react';
+import { Home, Search, User, LogOut, Menu, X, Sparkles, MessageCircle } from 'lucide-react';
 
 export default function Navbar() {
   const { logout } = useAuth();
@@ -12,6 +12,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home', icon: <Home size={18} /> },
     { href: '/search', label: 'Search', icon: <Search size={18} /> },
+    { href: '/messages', label: 'Messages', icon: <MessageCircle size={18} /> },
     { href: '/profile', label: 'Profile', icon: <User size={18} /> },
   ];
 
