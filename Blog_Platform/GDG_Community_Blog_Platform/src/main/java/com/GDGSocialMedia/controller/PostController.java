@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Map;
-import java.util.HashMap;
 
 @RestController
 public class PostController {
@@ -57,13 +55,12 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> findAllPost(@RequestHeader("Authorization") String jwt) throws Exception {
         User reqUser = userService.findUserByJwt(jwt);
         List<Post> posts = postService.findAllPost();
-        // Sort by creation date and limit to 10
+        // Sort by creation date descending
         posts.sort((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
-        List<PostResponse> recentPosts = posts.stream()
-            .limit(10)
+        List<PostResponse> allPosts = posts.stream()
             .map(PostResponse::fromPost)
             .collect(Collectors.toList());
-        return new ResponseEntity<>(recentPosts, HttpStatus.OK);
+        return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
     @PutMapping("/api/post/{postId}")
