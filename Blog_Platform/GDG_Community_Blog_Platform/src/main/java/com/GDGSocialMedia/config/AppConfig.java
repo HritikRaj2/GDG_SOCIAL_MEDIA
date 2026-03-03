@@ -1,9 +1,10 @@
 package com.GDGSocialMedia.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,16 +17,21 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
+
+    @Value("${allowed.origins:http://localhost:3000,https://gdg-blog.onrender.com,https://gdg-social-media.vercel.app}")
+    private String allowedOrigins;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
@@ -42,15 +48,11 @@ public class AppConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
-                cfg.setAllowedOrigins(Arrays.asList(
-                    "http://localhost:3000",
-                    "https://gdg-blog.onrender.com",
-                    "https://gdg-social-media.vercel.app"// Add your frontend Render URL here
-                ));
+                cfg.setAllowedOrigins(Arrays.stream(allowedOrigins.split(",")).map(String::trim).collect(Collectors.toList()));
                 cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
-                cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                cfg.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
                 cfg.setMaxAge(3600L);
                 return cfg;
             }
