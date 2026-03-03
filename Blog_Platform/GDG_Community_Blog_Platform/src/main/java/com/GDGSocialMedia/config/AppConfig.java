@@ -44,7 +44,8 @@ public class AppConfig {
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(Arrays.asList(
                     "http://localhost:3000",
-                    "https://gdg-blog.onrender.com"  // Add your frontend Render URL here
+                    "https://gdg-blog.onrender.com",
+                    "https://gdg-social-media.vercel.app"// Add your frontend Render URL here
                 ));
                 cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 cfg.setAllowCredentials(true);
